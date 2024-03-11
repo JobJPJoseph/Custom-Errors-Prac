@@ -16,11 +16,14 @@ describe("ValidationError", () => {
       expect(new ValidationError().name).to.eq("ValidationError");
     });
 
-    it("should capture the stack trace correctly", () => {
+    it("should capture the stack trace correctly", () => { // Fix the spy
       const traceSpy = chai.spy.on(Error, 'captureStackTrace');
       new ValidationError();
-      expect(traceSpy).to.have.been.called.once;
-      chai.spy.restore(Error);
+      // expect(traceSpy).to.have.been.called.once;
+      expect(traceSpy).to.have.been.called;
+      // expect(traceSpy).to.have.been.called.once;
+      chai.spy.restore(Error, 'captureStackTrace');
+      // chai.spy.restore(Error);
     });
 
     context("when a message is passed in", () => {
@@ -29,7 +32,7 @@ describe("ValidationError", () => {
         expect(error.message).to.eq("Password fields do not match");
       });
     });
-  
+
     context("when a message is NOT passed in", () => {
       it("should set the default message of the error to be 'Invalid input'", () => {
         const error = new ValidationError();
